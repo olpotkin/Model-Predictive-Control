@@ -5,9 +5,9 @@
 
 using CppAD::AD;
 
-// TODO: Set the timestep length and duration
-size_t N = 0;
-double dt = 0;
+// Set the timestep length and duration
+size_t N  = 25;                 // Number of timesteps
+double dt = 0.05;               // Duration
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -20,6 +20,23 @@ double dt = 0;
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
+
+double ref_cte  = 0;            // Reference cross track error
+double ref_epsi = 0;            // Orientation error
+double ref_v    = 40;           // Reference velocity
+
+// The solver takes all the state variables and actuator
+// variables in a singular vector. Thus, we should to establish
+// when one variable starts and another ends to make our lifes easier.
+size_t x_start      = 0;
+size_t y_start      = x_start + N;
+size_t psi_start    = y_start + N;
+size_t v_start      = psi_start + N;
+size_t cte_start    = v_start + N;
+size_t epsi_start   = cte_start + N;
+size_t delta_start  = epsi_start + N;
+size_t a_start      = delta_start + N - 1;
+
 
 class FG_eval {
 
